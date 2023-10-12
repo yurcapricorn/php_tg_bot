@@ -1,0 +1,199 @@
+<?php
+
+namespace App;
+
+use App\Tradebot\Helpers\Curl;
+use Illuminate\Database\Eloquent\Model;
+
+class Share extends Model
+{
+    protected $guarded = [''];
+    public $timestamps = false;
+    protected static $one_mln = ['AFKS', 'AFLT', 'AGRO', 'AKRN', 'ALRS', 'AMEZ', 'BANE', 'BANEP', 'BELU', 'BSPB',
+        'CBOM', 'CHMF', 'DSKY', 'DVEC', 'ENPL', 'ENRU', 'FEES', 'FIVE', 'FTRE', 'GAZP', 'GMKN', 'GRNT', 'HYDR', 'IRAO',
+        'IRKT', 'KBTK', 'KLSB', 'KRKNP', 'KZOS', 'LKOH', 'LNTA', 'LNZL', 'LNZLP', 'LSNGP', 'LSRG', 'MAGN', 'MFON',
+        'MGNT', 'MGTSP', 'MOEX', 'MRKP', 'MRKU', 'MRKV', 'MRKY', 'MSNG', 'MSST', 'MTLR', 'MTLRP', 'MTSS', 'MVID',
+        'NKHP', 'NKNCP', 'NLMK', 'NMTP', 'NVTK', 'OBUV', 'OGKB', 'OPIN', 'PHOR', 'PIKK', 'PLZL', 'POLY', 'PRFN', 'RASP',
+        'RBCM', 'RLMN', 'RNFT', 'ROSN', 'RSTI', 'RSTIP', 'RTKM', 'RTKMP', 'RUAL', 'RUGR', 'SBER', 'SBERP', 'SELG',
+        'SELGP', 'SFIN', 'SIBG', 'SIBN', 'SNGS', 'SNGSP', 'TATN', 'TATNP', 'TGKA', 'TRMK', 'TRNFP', 'UNAC', 'UPRO',
+        'URKA', 'UWGN', 'VSMO', 'VTBR', 'YNDX',];
+
+    public static function getOneMln(): array {
+        return static::$one_mln;
+    }
+
+    public static function getTwoMln(): array {
+        return static::$two_mln;
+    }
+
+    protected static $two_mln = ['AFKS', 'AFLT', 'AGRO', 'AKRN', 'ALRS', 'BANE', 'BANEP', 'BSPB', 'CBOM', 'CHMF',
+        'DSKY', 'ENPL', 'ENRU', 'FEES', 'FIVE', 'GAZP', 'GMKN', 'HYDR', 'IRAO', 'IRKT', 'KBTK', 'KLSB', 'KRKNP', 'KZOS',
+        'LKOH', 'LNTA', 'LNZL', 'LSNGP', 'LSRG', 'MAGN', 'MFON', 'MGNT', 'MOEX', 'MRKP', 'MRKV', 'MRKY', 'MSNG', 'MSST',
+        'MTLR', 'MTLRP', 'MTSS', 'MVID', 'NKHP', 'NLMK', 'NMTP', 'NVTK', 'OBUV', 'OGKB', 'PHOR', 'PIKK', 'PLZL', 'POLY',
+        'RASP', 'RBCM', 'RLMN', 'RNFT', 'ROSN', 'RSTI', 'RTKM', 'RTKMP', 'RUAL', 'SBER', 'SBERP', 'SELGP', 'SFIN',
+        'SIBN', 'SNGS', 'SNGSP', 'TATN', 'TATNP', 'TGKA', 'TRMK', 'TRNFP', 'UNAC', 'UPRO', 'UWGN', 'VTBR', 'YNDX',];
+    protected static $three_mln = ['AFKS', 'AFLT', 'AGRO', 'AKRN', 'ALRS', 'BANE', 'BANEP', 'CBOM', 'CHMF', 'DSKY',
+        'ENPL', 'ENRU', 'FEES', 'FIVE', 'GAZP', 'GMKN', 'HYDR', 'IRAO', 'IRKT', 'KBTK', 'KLSB', 'KZOS', 'LKOH', 'LNTA',
+        'LNZL', 'LSNGP', 'LSRG', 'MAGN', 'MFON', 'MGNT', 'MOEX', 'MRKP', 'MRKV', 'MRKY', 'MSNG', 'MSST', 'MTLR',
+        'MTLRP', 'MTSS', 'MVID', 'NKHP', 'NLMK', 'NVTK', 'OBUV', 'OGKB', 'PHOR', 'PIKK', 'PLZL', 'POLY', 'RASP', 'RBCM',
+        'RLMN', 'RNFT', 'ROSN', 'RSTI', 'RTKM', 'RTKMP', 'RUAL', 'SBER', 'SBERP', 'SELGP', 'SFIN', 'SIBN', 'SNGS',
+        'SNGSP', 'TATN', 'TATNP', 'TGKA', 'TRMK', 'TRNFP', 'UPRO', 'UWGN', 'VTBR', 'YNDX',];
+    protected static $four_mln = ['AFKS', 'AFLT', 'AGRO', 'AKRN', 'ALRS', 'BANE', 'BANEP', 'CBOM', 'CHMF', 'DSKY',
+        'ENPL', 'ENRU', 'FEES', 'FIVE', 'GAZP', 'GMKN', 'HYDR', 'IRAO', 'IRKT', 'KBTK', 'KZOS', 'LKOH', 'LNTA', 'LNZL',
+        'LSNGP', 'LSRG', 'MAGN', 'MFON', 'MGNT', 'MOEX', 'MRKP', 'MSNG', 'MSST', 'MTLR', 'MTLRP', 'MTSS', 'MVID',
+        'NKHP', 'NLMK', 'NVTK', 'OBUV', 'OGKB', 'PHOR', 'PIKK', 'PLZL', 'POLY', 'RASP', 'RBCM', 'RNFT', 'ROSN', 'RSTI',
+        'RTKM', 'RTKMP', 'RUAL', 'SBER', 'SBERP', 'SFIN', 'SIBN', 'SNGS', 'SNGSP', 'TATN', 'TATNP', 'TGKA', 'TRMK',
+        'TRNFP', 'UPRO', 'UWGN', 'VTBR', 'YNDX',];
+    protected static $ten_mln = ['AFKS', 'AFLT', 'AKRN', 'ALRS', 'BANEP', 'CBOM', 'CHMF', 'DSKY', 'ENRU', 'FEES',
+        'FIVE', 'GAZP', 'GMKN', 'HYDR', 'IRAO', 'IRKT', 'LKOH', 'LNTA', 'LSRG', 'MAGN', 'MFON', 'MGNT', 'MOEX', 'MSNG',
+        'MSST', 'MTLR', 'MTSS', 'MVID', 'NLMK', 'NVTK', 'OBUV', 'OGKB', 'PHOR', 'PIKK', 'PLZL', 'POLY', 'RASP', 'RNFT',
+        'ROSN', 'RSTI', 'RTKM', 'RUAL', 'SBER', 'SBERP', 'SFIN', 'SIBN', 'SNGS', 'SNGSP', 'TATN', 'TATNP', 'TGKA',
+        'TRMK', 'TRNFP', 'UPRO', 'VTBR', 'YNDX',];
+    protected static $bluechips = ['GAZP', 'SBER', 'SBERP', 'LKOH', 'GMKN', 'NVTK', 'MGNT', 'ROSN', 'TATN', 'MTSS',
+        'VTBR', 'SNGS', 'PHOR', 'SNGSP', 'SNGSP', 'ALRS', 'MOEX', 'CHMF', 'IRAO', 'PLZL', 'HYDR', 'RTKM', 'AFLT',
+        'MAGN', 'NLMK', 'TRNF', 'TRNFP', 'YNDX', 'AFKS'];
+    protected static $strange = ['TGKA', 'TGKB', 'TGKBP', 'TGKDP', 'TGKN', 'GAZT', 'HIMC', 'KRKO', 'NPOF', 'TGKD'];
+    protected static $badchips = ['KUNF', 'KSGR', 'GTSS', 'KMTZ', 'MNFD', 'TRFM', 'TANLP', 'BISV',
+        'ARSA', 'AVAN', 'GAZC', 'GAZS', 'GAZT', 'GTRK', 'HIMC', 'IDVP', 'JNOSP', 'IGST', 'KBSB', 'KGKC', 'KGKCP',
+        'KRKO', 'KTSBP', 'KZMS', 'LPSB', 'MAGE', 'MERF', 'MISBP', 'MORI', 'MRSB', 'MUGS', 'MUGSP', 'NNSBP', 'NPOF',
+        'OMSH', 'PRMB', 'RAVN', 'RDRB', 'RTSB', 'RUSI', 'RZSB', 'SAGO', 'TUZA', 'UCSS', 'URKZ', 'VJGZ', 'VRSB', 'WTCM',
+        'WTCMP', 'YRSB', 'YRSBP', 'YKENP'];
+    protected static $less_100k = ['ABRD', 'AQUA', 'ASSB', 'BISVP', 'BLNG', 'CLSB', 'CLSBP', 'CNTLP', 'DIOD', 'DZRDP',
+        'ELTZ', 'GAZA', 'GAZAP', 'HALS', 'HIMCP', 'IGSTP', 'KAZTP', 'KMEZ', 'KRKN', 'KRKOP', 'KROTP', 'KRSBP', 'KTSB',
+        'KUZB', 'LIFE', 'MAGEP', 'MGTS', 'MISB', 'MRKK', 'NAUK', 'NFAZ', 'NKSH', 'NNSB', 'PAZA', 'PLSM', 'PMSB',
+        'PMSBP', 'ROST', 'RTGZ', 'SARE', 'SAREP', 'SLEN', 'STSB', 'STSBP', 'SZPR', 'TANL', 'TASBP', 'TGKBP', 'TGKD',
+        'TGKDP', 'TNSE', 'TORSP', 'TTLK', 'UKUZ', 'UNKL', 'USBN', 'UTAR', 'VDSB', 'VGSBP', 'VLHZ', 'VZRZP', 'YAKG',
+        'YKEN', 'ZILL',];
+    protected static $msci = ['GAZP' => 14.48, 'SBER' => 19, 'SBERP', 'LKOH' => 13.19, 'GMKN' => 5, 'NVTK' => 6.58,
+        'MGNT' => 7.06, 'ROSN' => 4, 'TATN' => 6.77, 'MTSS' => 3, 'VTBR' => 4, 'SNGS' => 2.4, 'PHOR' => 1,
+        'SNGSP' => 2.2, 'ALRS' => 2.6, 'MOEX' => 1.7, 'CHMF' => 1.4, 'IRAO' => 1.4, 'HYDR' => 0.85, 'RTKM' => 0.73,
+        'NLMK' => 1.5, 'TRNFP' => 0, 83, 'AFKS' => 0.49];
+    protected static $best_15 = [];
+
+    public static function fillArray($shareAsArray) {
+        $share = [
+            'SECID' => $shareAsArray[0],
+            'BOARDID' => $shareAsArray[1],
+            'SHORTNAME' => $shareAsArray[2],
+            'PREVPRICE' => $shareAsArray[3],
+            'LOTSIZE' => $shareAsArray[4],
+            'FACEVALUE' => $shareAsArray[5],
+            'STATUS' => $shareAsArray[6],
+            'BOARDNAME' => $shareAsArray[7],
+            'DECIMALS' => $shareAsArray[8],
+            'SECNAME' => $shareAsArray[9],
+            'REMARKS' => $shareAsArray[10],
+            'MARKETCODE' => $shareAsArray[11],
+            'INSTRID' => $shareAsArray[12],
+            'SECTORID' => $shareAsArray[13],
+            'MINSTEP' => $shareAsArray[14],
+            'PREVWAPRICE' => $shareAsArray[15],
+            'FACEUNIT' => $shareAsArray[16],
+            'PREVDATE' => $shareAsArray[17],
+            'ISSUESIZE' => $shareAsArray[18],
+            'ISIN' => $shareAsArray[19],
+            'LATNAME' => $shareAsArray[20],
+            'REGNUMBER' => $shareAsArray[21],
+            'PREVLEGALCLOSEPRICE' => $shareAsArray[22],
+            'PREVADMITTEDQUOTE' => $shareAsArray[23],
+            'CURRENCYID' => $shareAsArray[24],
+            'SECTYPE' => $shareAsArray[25],
+            'LISTLEVEL' => $shareAsArray[26],
+            'SETTLEDATE' => $shareAsArray[27]
+        ];
+        return $share;
+    }
+
+    public static function getAll() {
+        return static::whereNotIn('SECID', static::$badchips)->get();
+//        return static::where('LISTLEVEL', '<', 3)->whereNotIn('SECID', static::$badchips)->get();
+    }
+
+    public static function getGood() {
+        return static::where('LISTLEVEL', '<', 3);
+    }
+
+    public static function getBest() {
+        return static::where('LISTLEVEL', 1);
+    }
+
+    public static function getBlue() {
+        return static::whereIn('SECID', static::$bluechips)->get();
+    }
+
+    public static function getByNumtrades($numtrades) {
+        $ids = [];
+        $last_trade_day = date("Y-m-d", strtotime("today -1 Weekday"));
+        foreach (static::getAll() as $share) {
+            $day = Day::where('SECID', $share->SECID)
+                ->where('TRADEDATE', $last_trade_day)->first();
+            if (!empty($day) && $day->NUMTRADES >= $numtrades) {
+                $ids[] = $day->SECID;
+            }
+        }
+        return static::whereIn('SECID', $ids)->get();
+    }
+
+    public static function getByTurnover($turnover, $date = null) {
+        $ids = [];
+        $last_date = date('Y-m-d', strtotime("-1 month"));
+        foreach (static::getAll() as $share) {
+            $day = Day::where('SECID', $share->SECID)
+                ->where('TRADEDATE', '>=', $last_date)
+                ->get();
+            if (!$day->isEmpty()) {
+                $id = $day[0]->SECID;
+                if ((array_sum($day->pluck('VALUE')->toArray()) / sizeof($day)) >= $turnover) {
+                    $ids[] = $id;
+                }
+            }
+        }
+        return static::whereIn('SECID', $ids)->get();
+    }
+
+    public static function getMSCI() {
+        return static::$msci;
+    }
+
+    public static function getStrange() {
+        return static::$strange;
+    }
+
+    public static function getLastPrice($id) {
+        $share = Curl::makeRequest('https://iss.moex.com/iss/engines/stock/markets/shares/securities/' . $id . '.json');
+        if (empty($share)) {
+            throw new \Exception('cant get share info from moex server for last price detection');
+        }
+        $share = json_decode($share, true);
+        $boardid_col_pos = array_search('BOARDID', $share['marketdata']['columns']);
+        $data = [];
+        foreach ($share['marketdata']['data'] as $data) {
+            if ($data[$boardid_col_pos] === 'TQBR') {
+                break;
+            }
+        }
+        $result = [];
+        for ($i = 0; $i < sizeof($data); $i++) {
+            if ($data[$i] != null) {
+                $result[$share['marketdata']['columns'][$i]] = $data[$i];
+            }
+        }
+        return $result['LAST'] ?? $result['MARKETPRICE'];
+    }
+
+    public static function updater() {
+        \DB::table('shares')->truncate();
+        $url = 'https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities.json';
+        $shares = Curl::makeRequest($url);
+        $shares = json_decode($shares, true);
+        $result = $shares['securities']['data'];
+        foreach ($result as $share) {
+            $share = Share::fillArray($share);
+            if (Share::where('SECID', $share['SECID'])->get()->isEmpty()) {
+                echo 'empty!' . $share['SECID'] . '<p>';
+                $share = new Share($share);
+                echo 'added' . $share['SECID'] . 'with result ' . $share->save() . '<p>';
+            } else echo 'exists ' . $share['SECID'] . '<p>';
+        }
+    }
+}
